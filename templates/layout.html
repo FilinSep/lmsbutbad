@@ -11,17 +11,16 @@
     <header class="px-3 d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <span class="col-md-3 mb-md-0 mb-1 h2" href="#">PyOpenTask Archive</span>
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2">Задачи</a></li>
-          <li><a href="#" class="nav-link px-2">Рейтинг</a></li>
-          <li><a href="#" class="nav-link px-2">Справка</a></li>
+          <li><a href="/" class="nav-link px-2">Задачи</a></li>
+          <li><a href="/rating" class="nav-link px-2">Рейтинг</a></li>
           <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/FilinSep/lmsbutbad" class="nav-link px-2">GitHub</a></li>
         </ul>
   
         <div class="col-md-3 text-end">
           {% if not user.is_authenticated %}
-            <button type="button" onclick="location.href = 'login';" class="btn btn-primary">Войти</button>
+            <button type="button" onclick="location.href = '/login';" class="btn btn-primary">Войти</button>
           {% else %}
-            <a href="#" class="nav-link px-2">{{ user.name }}</a>
+            <a href="/logout" class="nav-link px-2">Выйти с {{ user.name }}</a>
           {% endif %}
         </div>
       </header>

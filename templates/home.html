@@ -1,4 +1,10 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div class="card text-center" style="width: 500px; margin: 0 auto;">
+    <h1>Задачи</h1>
+{% for task in tasks %}
+    <a href="/task/{{ task['index'] }}" class="nav-link px-2 py-2">{{ task['name'] }}</a>
+{% endfor %}
+</div>
 {% endblock %}

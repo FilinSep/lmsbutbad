@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="container py-2"><div class="alert alert-primary text-center" style="width: 600px; margin: 0 auto;" role="alert">Ваш рейтинг {{ user.rating }}🏆</div></div>
+
+  <div class="card" style="width: 300px; margin: 0 auto;">
+        <div class="text-center h1 py-2">Рейтинг</div>
+        {% for ind, ruser in enumerate(rating) %}
+          <div class="text-center"><p>{{ind + 1}}. <b>{{ ruser.name }}</b> - {{ ruser.rating }}🏆</p></div>
+        {% endfor %}
+        
+    </div>
+{% endblock %}

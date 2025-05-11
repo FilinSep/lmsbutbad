@@ -1,21 +1,32 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="text-center h1">{{ task['name'] }}</div>
 
-<div class="container pb-3" style="width: 500px;">
-    <div class="card">
-        <div class="card-body" style="white-space: pre-line;">{{ task['description'] }}</div>
+    {% if status %}
+    <div class="container py-2">
+        {% if status.status == "CHECK" %}
+        <div class="alert alert-warning text-center" style="width: 600px; margin: 0 auto;" role="alert">Решение задачи проверяется</div>
+        {% endif %}
+        {% if status.status == "ERROR" %}
+        <div class="alert alert-danger text-center" style="width: 600px; margin: 0 auto;" role="alert">{{ status.info }}</div>
+        {% endif %}
+        {% if status.status == "SUCCESS" %}
+        <div class="alert alert-success text-center" style="width: 600px; margin: 0 auto;" role="alert">Задача выполнена</div>
+        {% endif %}
     </div>
-</div>
+    {% endif %}
 
-<div class="d-flex justify-content-center container"><pre contenteditable class="prettyprint" style="height: 400px;width: 500px;"><code class="language-python"># Пишите код тут
-print('lms but bad')</code></pre></div>
-
-<div class="container">
-    <div class="row">
-      <div class="col text-center">
-        <button class="btn btn-success">Отправить код</button>
-      </div>
+    <div class="card text-center" style="width: 600px; margin: 0 auto;">
+        <div class="text-center h1 py-2">{{ task['name'] }}</div>
+        <div class="container px-3"><div class="card">
+            <div class="card-body" style="white-space: pre-line;">{{ task['description'] }}</div>
+        </div></div>
+        
+        <div class="container px-3 py-2">
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>{{ form.code(class="prettyprint language-python", style="height: 400px; width: 500px;") }}</p>
+                <p>{{ form.submit(type="submit", class="btn btn-success") }}</p>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

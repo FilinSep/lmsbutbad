@@ -1,11 +1,14 @@
 from flask import *
 from utils import *
+import checker
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 import data.db_session as dses
 
 from data.users import User
 from data.login_form import LoginForm
 from data.reg_form import RegisterForm
+from data.code_form import CodeForm
+
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -67,7 +70,7 @@ def reg():
 
 @app.route('/')
 def index():
-    return render_template('home.html', user=current_user)
+    return render_template('home.html', user=current_user, tasks=get_list_of_tasks())
 
 
 @app.route('/logout')
@@ -77,12 +80,46 @@ def logout():
     return redirect('/')
 
 
-@app.route('/tasks/<uid>')
+@app.route('/rating')
+def rating():
+    db_sess = dses.create_session()
+
+    if not current_user.is_authenticated:
+        return redirect('/auth')
+    
+    return render_template('rating.html', rating=reversed(list(db_sess.query(User).order_by(User.rating).limit(10))), user=current_user, enumerate=enumerate)
+
+
+@app.route('/task/<uid>', methods=['GET', 'POST'])
 def task(uid):
     if not task_exists(uid):
         return redirect('/')
     
-    return render_template('task.html', task=read_task(uid), user=current_user)
+    content = request.cookies.get(f'{uid}_tf')
+
+    form = CodeForm()
+    if current_user.is_authenticated:
+        resp = make_response(render_template('task.html', task=read_task(uid), user=current_user, status=get_task_status(current_user.id, uid), form=form))
+
+        if form.validate_on_submit():
+            resp.set_cookie(f'{uid}_tf', form.code.data)
+
+            st = dses.create_session().query(TaskStatus).filter(TaskStatus.task == uid, TaskStatus.user_id == current_user.id).first()
+
+            if not st or st.status == 'ERROR':
+                checker.run(current_user.id, uid, form.code.data)
+
+        else:
+            form.code.data = content if content else '# Пишите код тут\n\nprint("Hello, World!")'
+
+        return resp
+    
+    return redirect('/auth')
+
+
+@app.route('/auth')
+def auth():
+    return render_template('noauth.html', user=current_user)
 
 
 if __name__ == "__main__":

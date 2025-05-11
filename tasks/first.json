@@ -1,4 +1,9 @@
 {
     "name": "Задание 1",
-    "description": "Это самое первое задание!"
+    "description": "Это самое первое задание!",
+    "cases": [
+        {"input": ["1"], "output": "1"}
+    ],
+    "timeout": 3,
+    "rating": 0.2
 }
