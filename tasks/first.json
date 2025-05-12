@@ -5,5 +5,5 @@
         {"input": [], "output": "Привет, Мир!"}
     ],
     "timeout": 1,
-    "rating": 0.2
+    "rating": 0.1
 }
