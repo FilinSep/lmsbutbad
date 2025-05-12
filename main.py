@@ -87,7 +87,11 @@ def rating():
     if not current_user.is_authenticated:
         return redirect('/auth')
     
-    return render_template('rating.html', rating=reversed(list(db_sess.query(User).order_by(User.rating).limit(10))), user=current_user, enumerate=enumerate)
+    rt = reversed(list(db_sess.query(User).order_by(User.rating).limit(10)))
+    db_sess.close()
+
+    return render_template('rating.html', rating=rt, user=current_user, enumerate=enumerate)
+    
 
 
 @app.route('/task/<uid>', methods=['GET', 'POST'])

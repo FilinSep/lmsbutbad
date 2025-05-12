@@ -18,4 +18,6 @@ def get_list_of_tasks():
 
 def get_task_status(uid, tname):
     db_sess = dses.create_session()
-    return db_sess.query(TaskStatus).filter(TaskStatus.user_id == uid, TaskStatus.task == tname).first()
+    st = db_sess.query(TaskStatus).filter(TaskStatus.user_id == uid, TaskStatus.task == tname).first()
+    db_sess.close()
+    return st

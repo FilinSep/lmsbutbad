@@ -24,12 +24,16 @@ def set_status(uid, tname, status, info = None, session=None):
         session.execute(sqlalchemy.update(TaskStatus).where(TaskStatus.user_id == uid, TaskStatus.task == tname).values(status=status, info=info))
         session.commit()
 
+    session.close()
+
 
 def give_rating(uid, rating):
     session = dses.create_session()
 
     session.execute(sqlalchemy.update(User).where(User.id == uid).values(rating=User.rating + rating))
     session.commit()
+
+    session.close()
 
 
 def suit(uid, tname, code, cases, rating, queue):
